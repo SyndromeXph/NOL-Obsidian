@@ -1,1 +1,1 @@
-# NOLSAKEN Obsidian UI      Welcome to use
+# NOLSAKEN Obsidian UI 全中文黑曜石UI
