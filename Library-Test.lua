@@ -8925,7 +8925,7 @@ function Library:CreateLoading(LoadingInfo)
         Library:RemoveFromRegistry(Instance)
     end)
 
-    --// 主框架 - 高级玻璃质感 \\--
+    --// 主框架 \\--
     local MainFrame = New("TextButton", {
         Name = "Main",
         AnchorPoint = Vector2.new(0.5, 0.5),
@@ -8941,20 +8941,28 @@ function Library:CreateLoading(LoadingInfo)
         Parent = ScreenGui,
     })
     
-    --// 更精致的边框 - 用双重描边 \\--
-    local OutlineStroke, ShadowStroke = Library:AddOutline(MainFrame)
-    OutlineStroke.Thickness = 1.5
-    OutlineStroke.Transparency = 0.3
-    ShadowStroke.Thickness = 3
-    ShadowStroke.Transparency = 0.5
-    
+    --// 圆角 \\--
     local MainCorner = New("UICorner", { 
         CornerRadius = UDim.new(0, Library.CornerRadius), 
         Parent = MainFrame 
     })
     table.insert(Library.Corners, MainCorner)
 
-    --// 发光效果 - 更柔和 \\--
+    --// 边框 - 使用 UIStroke \\--
+    local MainOutline = New("UIStroke", {
+        Color = "OutlineColor",
+        Thickness = 1.5,
+        Transparency = 0.3,
+        Parent = MainFrame,
+    })
+    local MainShadow = New("UIStroke", {
+        Color = "DarkColor",
+        Thickness = 3,
+        Transparency = 0.5,
+        Parent = MainFrame,
+    })
+
+    --// 发光效果 \\--
     local GlowFrame = New("ImageLabel", {
         BackgroundTransparency = 1,
         Position = UDim2.fromOffset(-40, -40),
@@ -8968,7 +8976,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = MainFrame,
     })
     
-    --// 顶部玻璃高光条 \\--
+    --// 顶部高光 \\--
     local TopHighlight = New("Frame", {
         BackgroundColor3 = "WhiteColor",
         BackgroundTransparency = 0.03,
@@ -8984,7 +8992,7 @@ function Library:CreateLoading(LoadingInfo)
     table.insert(Library.Scales, MainScale)
     Library.ScalesOffset[MainScale] = Library.IsMobile and 0.2 or 0
 
-    --// 布局容器 \\--
+    --// 内容容器 \\--
     local Container = New("Frame", {
         Name = "Content",
         BackgroundTransparency = 1,
@@ -8993,7 +9001,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = MainFrame,
     })
 
-    --// 侧边栏 - 带精致边框 \\--
+    --// 侧边栏 \\--
     local SideBar = New("Frame", {
         Name = "SideBar",
         BackgroundTransparency = 1,
@@ -9009,12 +9017,21 @@ function Library:CreateLoading(LoadingInfo)
     })
     table.insert(Library.Corners, SidebarCorner)
     
-    --// 侧边栏精致边框 \\--
-    local SideOutline, SideShadow = Library:AddOutline(SideBar)
-    SideOutline.Thickness = 1
-    SideOutline.Transparency = 0.2
+    --// 侧边栏边框 \\--
+    local SideOutline = New("UIStroke", {
+        Color = "OutlineColor",
+        Thickness = 1,
+        Transparency = 0.2,
+        Parent = SideBar,
+    })
+    local SideShadow = New("UIStroke", {
+        Color = "DarkColor",
+        Thickness = 2,
+        Transparency = 0.3,
+        Parent = SideBar,
+    })
 
-    --// 分隔线 - 带渐变 \\--
+    --// 分隔线 \\--
     local SidebarDivider = New("Frame", {
         BackgroundColor3 = "OutlineColor",
         BackgroundTransparency = 0.3,
@@ -9025,7 +9042,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = SideBar,
     })
 
-    --// 顶部栏 - 更精致 \\--
+    --// 顶部栏 \\--
     local TopBar = New("Frame", {
         Name = "TopBar",
         BackgroundTransparency = 1,
@@ -9034,7 +9051,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = Container,
     })
     
-    --// 顶部渐变条 - 更细腻 \\--
+    --// 顶部渐变条 \\--
     local TopGradient = New("Frame", {
         BackgroundColor3 = "AccentColor",
         BackgroundTransparency = 0.08,
@@ -9073,13 +9090,14 @@ function Library:CreateLoading(LoadingInfo)
         Parent = TitleHolder,
     })
 
-    --// 标题图标 - 带精致脉动 \\--
+    --// 标题图标 \\--
     local IconContainer = New("Frame", {
         BackgroundTransparency = 1,
         Size = UDim2.fromOffset(28, 28),
         Parent = TitleHolder,
     })
     
+    local PulseTween
     if LoadingInfo.Icon then
         local Icon = Library:GetCustomIcon(LoadingInfo.Icon)
         local WindowIcon = New("ImageLabel", {
@@ -9091,8 +9109,7 @@ function Library:CreateLoading(LoadingInfo)
             Parent = IconContainer,
         })
         
-        --// 精致脉动 \\--
-        local PulseTween = TweenService:Create(WindowIcon, 
+        PulseTween = TweenService:Create(WindowIcon, 
             TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1), 
             { ImageTransparency = 0.15 }
         )
@@ -9109,7 +9126,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = TitleHolder,
     })
 
-    --// 分隔线 - 更精致 \\--
+    --// 分隔线 \\--
     local DividerLine = New("Frame", {
         BackgroundColor3 = "OutlineColor",
         BackgroundTransparency = 0.2,
@@ -9118,7 +9135,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = Container,
     })
 
-    --// 加载内容 \\--
+    --// 内容区域 \\--
     local InnerContent = New("Frame", {
         Name = "InnerContent",
         BackgroundTransparency = 1,
@@ -9135,7 +9152,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = InnerContent,
     })
 
-    --// 加载图标 - 高级多层效果 \\--
+    --// 加载图标 \\--
     local IconHolder = New("Frame", {
         Name = "IconHolder",
         BackgroundTransparency = 1,
@@ -9143,7 +9160,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = InnerContent,
     })
     
-    --// 外层旋转环 - 更精致 \\--
+    --// 外层旋转环 \\--
     local OuterRing = New("Frame", {
         BackgroundTransparency = 1,
         Size = UDim2.fromScale(1, 1),
@@ -9161,7 +9178,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = OuterRing,
     })
     
-    --// 中层旋转环 - 反向 \\--
+    --// 中层旋转环 \\--
     local MiddleRing = New("Frame", {
         BackgroundTransparency = 1,
         Size = UDim2.fromScale(0.85, 0.85),
@@ -9220,7 +9237,7 @@ function Library:CreateLoading(LoadingInfo)
         RotationTween:Play()
     end
 
-    --// 消息文本 - 精致排版 \\--
+    --// 消息文本 \\--
     local MessageLabel = New("TextLabel", {
         BackgroundTransparency = 1,
         AutomaticSize = Loading.AutoResizeHeight and Enum.AutomaticSize.Y or Enum.AutomaticSize.XY,
@@ -9230,11 +9247,9 @@ function Library:CreateLoading(LoadingInfo)
         TextColor3 = "FontColor",
         TextWrapped = Loading.AutoResizeHeight,
         TextTransparency = 0.2,
-        FontFace = Font.fromEnum(Enum.Font.GothamMedium),
         Parent = InnerContent,
     })
     
-    --// 消息淡入 \\--
     local MessageFadeIn = TweenService:Create(MessageLabel, 
         TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
         { TextTransparency = 0 }
@@ -9249,11 +9264,10 @@ function Library:CreateLoading(LoadingInfo)
         TextTransparency = 0.5,
         TextWrapped = Loading.AutoResizeHeight,
         TextColor3 = "FontColor",
-        FontFace = Font.fromEnum(Enum.Font.Gotham),
         Parent = InnerContent,
     })
 
-    --// 进度条 - 高级设计 \\--
+    --// 进度条 \\--
     local SliderContainer = New("Frame", {
         BackgroundTransparency = 1,
         Size = UDim2.new(0.8, 0, 0, 28),
@@ -9272,13 +9286,12 @@ function Library:CreateLoading(LoadingInfo)
         Size = UDim2.new(1, 0, 0, 6),
         Parent = SliderContainer,
     })
-    local SliderCorner = New("UICorner", { 
+    New("UICorner", { 
         CornerRadius = UDim.new(1, 0), 
         Parent = SliderBar 
     })
-    table.insert(Library.Corners, SliderCorner)
 
-    --// 进度条填充 - 带光泽 \\--
+    --// 进度条填充 \\--
     local SliderFill = New("Frame", {
         BackgroundColor3 = "AccentColor",
         BorderSizePixel = 0,
@@ -9303,7 +9316,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = FillShine 
     })
 
-    --// 进度信息行 \\--
+    --// 进度信息 \\--
     local ProgressRow = New("Frame", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 16),
@@ -9322,7 +9335,6 @@ function Library:CreateLoading(LoadingInfo)
         TextSize = 12,
         TextColor3 = "FontColor",
         TextTransparency = 0.4,
-        FontFace = Font.fromEnum(Enum.Font.Gotham),
         Parent = ProgressRow,
     })
     
@@ -9333,11 +9345,10 @@ function Library:CreateLoading(LoadingInfo)
         TextSize = 12,
         TextColor3 = "AccentColor",
         TextTransparency = 0.2,
-        FontFace = Font.fromEnum(Enum.Font.GothamBold),
         Parent = ProgressRow,
     })
 
-    --// 步骤指示器 - 精致圆点 \\--
+    --// 步骤指示器 \\--
     local StepIndicator = New("Frame", {
         BackgroundTransparency = 1,
         Size = UDim2.new(0.8, 0, 0, 10),
@@ -9370,7 +9381,6 @@ function Library:CreateLoading(LoadingInfo)
             Parent = Dot,
         })
         
-        --// 激活状态光晕 \\--
         local DotGlow = New("Frame", {
             AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundColor3 = "AccentColor",
@@ -9387,7 +9397,7 @@ function Library:CreateLoading(LoadingInfo)
         table.insert(StepDots, { Dot = Dot, Glow = DotGlow })
     end
 
-    --// 侧边栏 \\--
+    --// 侧边栏滚动 \\--
     local SidebarScrolling = New("ScrollingFrame", {
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
@@ -9437,7 +9447,7 @@ function Library:CreateLoading(LoadingInfo)
     setmetatable(SidebarObject, BaseGroupbox)
     Loading.Sidebar = SidebarObject
 
-    --// 错误界面 - 高级设计 \\--
+    --// 错误界面 \\--
     local ErrorFrame = New("Frame", {
         Name = "Error",
         BackgroundTransparency = 1,
@@ -9472,7 +9482,6 @@ function Library:CreateLoading(LoadingInfo)
         TextColor3 = "RedColor",
         TextSize = 22,
         TextXAlignment = Enum.TextXAlignment.Center,
-        FontFace = Font.fromEnum(Enum.Font.GothamBold),
         Parent = ErrorFrame,
     })
 
@@ -9484,7 +9493,6 @@ function Library:CreateLoading(LoadingInfo)
         TextTransparency = 0.3,
         TextWrapped = true,
         TextXAlignment = Enum.TextXAlignment.Center,
-        FontFace = Font.fromEnum(Enum.Font.Gotham),
         Parent = ErrorFrame,
     })
 
@@ -9512,7 +9520,7 @@ function Library:CreateLoading(LoadingInfo)
         Parent = ErrorButtonsHolder,
     })
 
-    --// 加载函数 \\--
+    --// ===== 加载函数 ===== \\--
     function Loading:UpdateLayout()
         if Loading.IsError then
             Loading:RecalculateErrorHeight()
@@ -9554,14 +9562,14 @@ function Library:CreateLoading(LoadingInfo)
         end
 
         local RequiredHeight = 
-              53 -- TopBar
-            + 20 -- Padding
-            + InnerContent.UIListLayout.AbsoluteContentSize.Y
+            53 + -- TopBar
+            20 + -- Padding
+            InnerContent.UIListLayout.AbsoluteContentSize.Y
 
         Loading.WindowHeight = math.max(Loading.BaseWindowHeight, RequiredHeight)
     end
 
-    function Loading:SetMessage(Text)
+    function Loading:SetMessage(Text: string)
         MessageLabel.Text = Text
         MessageFadeIn:Play()
 
@@ -9571,7 +9579,7 @@ function Library:CreateLoading(LoadingInfo)
         end
     end
 
-    function Loading:SetDescription(Text)
+    function Loading:SetDescription(Text: string)
         DescriptionLabel.Text = Text
 
         if Loading.AutoResizeHeight then
@@ -9580,14 +9588,14 @@ function Library:CreateLoading(LoadingInfo)
         end
     end
 
-    function Loading:SetLoadingIcon(Icon)
+    function Loading:SetLoadingIcon(Icon: string)
         local IconData = Library:GetCustomIcon(Icon)
         LoadingIcon.Image = IconData.Url
         LoadingIcon.ImageRectOffset = IconData.ImageRectOffset
         LoadingIcon.ImageRectSize = IconData.ImageRectSize
     end
 
-    function Loading:SetLoadingIconTweenTime(TweenTime)
+    function Loading:SetLoadingIconTweenTime(TweenTime: number)
         if RotationTween then
             RotationTween:Cancel()
             RotationTween:Destroy()
@@ -9605,11 +9613,11 @@ function Library:CreateLoading(LoadingInfo)
         end
     end
 
-    function Loading:SetLoadingIconColor(Color)
+    function Loading:SetLoadingIconColor(Color: Color3)
         LoadingIcon.ImageColor3 = Color
     end
 
-    function Loading:SetCurrentStep(Step)
+    function Loading:SetCurrentStep(Step: number)
         Loading.CurrentStep = math.clamp(Step, 0, Loading.TotalSteps)
 
         local Progress = Loading.CurrentStep / Loading.TotalSteps
@@ -9617,11 +9625,9 @@ function Library:CreateLoading(LoadingInfo)
             Size = UDim2.fromScale(Progress, 1) 
         }):Play()
         
-        --// 更新进度文字 \\--
         PercentLabel.Text = string.format("%d%%", math.floor(Progress * 100))
         ProgressLabel.Text = string.format("%d / %d", Loading.CurrentStep, Loading.TotalSteps)
         
-        --// 更新步骤点 \\--
         for i, DotData in ipairs(StepDots) do
             local Active = i <= Loading.CurrentStep
             TweenService:Create(DotData.Dot, Library.TweenInfo, {
@@ -9635,7 +9641,7 @@ function Library:CreateLoading(LoadingInfo)
         end
     end
 
-    function Loading:SetTotalSteps(Steps)
+    function Loading:SetTotalSteps(Steps: number)
         Loading.TotalSteps = Steps
         
         for _, DotData in StepDots do
@@ -9682,32 +9688,32 @@ function Library:CreateLoading(LoadingInfo)
         Loading:SetCurrentStep(Loading.CurrentStep)
     end
 
-    function Loading:SetWindowHeight(Height)
+    function Loading:SetWindowHeight(Height: number)
         Loading.WindowHeight = Height
         Loading:UpdateLayout()
     end
 
-    function Loading:SetWindowWidth(Width)
+    function Loading:SetWindowWidth(Width: number)
         Loading.WindowWidth = Width
         Loading:UpdateLayout()
     end
 
-    function Loading:SetContentWidth(Width)
+    function Loading:SetContentWidth(Width: number)
         Loading.ContentWidth = Width
         Loading:UpdateLayout()
     end
 
-    function Loading:SetSidebarWidth(Width)
+    function Loading:SetSidebarWidth(Width: number)
         Loading.SidebarWidth = Width
         Loading:UpdateLayout()
     end
 
-    function Loading:ShowSidebarPage(Bool)
+    function Loading:ShowSidebarPage(Bool: boolean)
         Loading.ShowSidebar = Bool
         Loading:UpdateLayout()
     end
 
-    function Loading:ShowErrorPage(Enabled)
+    function Loading:ShowErrorPage(Enabled: boolean)
         Loading.IsError = Enabled
         InnerContent.Visible = not Enabled
         ErrorFrame.Visible = Enabled
@@ -9726,25 +9732,25 @@ function Library:CreateLoading(LoadingInfo)
 
         local HasButtons = ErrorButtonsHolder.Visible
         local RequiredHeight = 
-              53 -- TopBar
-            + 48 -- Error Icon
-            + 12 -- Icon to Title
-            + 28 -- Title Height
-            + 8 -- Title to Label
-            + ErrorY + 4 -- Label Height
-            + 16 -- Label to Buttons
-            + (HasButtons and 44 or 0) -- Buttons Area
-            + 24 -- Bottom Padding
+            53 + -- TopBar
+            48 + -- Error Icon
+            12 + -- Icon to Title
+            28 + -- Title Height
+            8 + -- Title to Label
+            ErrorY + 4 + -- Label Height
+            16 + -- Label to Buttons
+            (HasButtons and 44 or 0) + -- Buttons Area
+            24 -- Bottom Padding
 
         Loading.WindowErrorHeight = RequiredHeight
     end
 
-    function Loading:SetErrorMessage(Text)
+    function Loading:SetErrorMessage(Text: string)
         ErrorLabel.Text = Text
         Loading:UpdateLayout()
     end
 
-    function Loading:SetErrorButtons(Buttons)
+    function Loading:SetErrorButtons(Buttons: {})
         assert(typeof(Buttons) == "table", "Buttons must be a table")
 
         for _, button in ErrorButtonsHolder:GetChildren() do
@@ -9753,7 +9759,7 @@ function Library:CreateLoading(LoadingInfo)
             end
         end
 
-        local HasButtons = GetTableSize(Buttons) > 0
+        local HasButtons = next(Buttons) ~= nil
         ErrorButtonsHolder.Visible = HasButtons
         ErrorButtonsDivider.Visible = HasButtons
 
@@ -9780,7 +9786,11 @@ function Library:CreateLoading(LoadingInfo)
                 AutoButtonColor = false,
                 Parent = ButtonContainer,
             })
-            Library:AddOutline(TextBtn)
+            New("UIStroke", {
+                Color = "OutlineColor",
+                Transparency = 0.3,
+                Parent = TextBtn,
+            })
             New("UICorner", { 
                 CornerRadius = UDim.new(0, Library.CornerRadius / 2), 
                 Parent = TextBtn 
@@ -9800,10 +9810,9 @@ function Library:CreateLoading(LoadingInfo)
             local BtnLabel = New("TextLabel", {
                 BackgroundTransparency = 1,
                 Size = UDim2.fromScale(1, 1),
-                Text = ButtonInfo.Title or Idx,
+                Text = ButtonInfo.Title or tostring(Idx),
                 TextColor3 = TextColor,
                 TextSize = 14,
-                FontFace = Font.fromEnum(Enum.Font.GothamMedium),
                 Parent = TextBtn,
             })
             
@@ -9868,7 +9877,7 @@ function Library:CreateLoading(LoadingInfo)
         end
     end
 
-    Loading.Continue = Loading.Destroy;
+    Loading.Continue = Loading.Destroy
 
     if Library.Toggle and Library.Toggled and Library.Unloaded ~= true then
         Library:Toggle(false)
@@ -9878,7 +9887,7 @@ function Library:CreateLoading(LoadingInfo)
     Loading:SetCurrentStep(Loading.CurrentStep)
     Loading:SetMessage("Loading...")
     
-    --// 入场动画 - 弹性效果 \\--
+    --// 入场动画 \\--
     MainFrame.Size = UDim2.fromOffset(0, 0)
     MainFrame.BackgroundTransparency = 1
     
